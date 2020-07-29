@@ -21,7 +21,7 @@ calcTotalOrbits map = calcDirectOrbits map + calcIndirectOrbits map
 calcDirectOrbits (Object _ children) = ownOrbits + childrenOrbits
     where 
         ownOrbits      = length children
-        childrenOrbits = sum $ map calcDirectOrbits children
+        childrenOrbits = foldr ((+) . calcDirectOrbits) 0 children
 
 -- Calculate number of indirect orbits in a map
 calcIndirectOrbits (Object _ children) = childIndirectOrbits
@@ -29,8 +29,8 @@ calcIndirectOrbits (Object _ children) = childIndirectOrbits
         calcIndirectOrbits' acc (Object _ children') = ownOrbits + childrenOrbits
             where
                 ownOrbits      = acc
-                childrenOrbits = sum $ map (calcIndirectOrbits' (acc + 1)) children'
-        childIndirectOrbits                          = sum $ map (calcIndirectOrbits' 0) children
+                childrenOrbits = foldr ((+) . calcIndirectOrbits' (acc + 1)) 0 children'
+        childIndirectOrbits                          = foldr ((+) . calcIndirectOrbits' 0) 0 children
 
 -- Calculate required orbital transfers to move between two objects
 orbitalTransfersRequired object from to =
