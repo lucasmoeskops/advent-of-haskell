@@ -1,4 +1,5 @@
 {- Advent of Code year 2019 day 6 solution in Haskell 
+ - Title: Universal Orbit Map
  - Author: Lucas Moeskops
  - Date: July 28th 2020
  -
